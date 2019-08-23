@@ -1,9 +1,15 @@
-import { Sequelize } from 'sequelize';
-import { loadEntities } from '../../model';
+import { Sequelize, Model } from 'sequelize-typescript';
+import * as Models from '../../model';
+
+export const PROVIDER_DATABASE = Symbol('SEQUELIZE');
+const models: Array<typeof Model> = [];
+for (const modelKey in Models) {
+    models.push(Models[modelKey]);
+}
 
 export const providers = [
     {
-        provide: 'SEQUELIZE',
+        provide: PROVIDER_DATABASE,
         useFactory: async () => {
             const sequelize = new Sequelize({
                 dialect: 'mysql',
@@ -14,8 +20,8 @@ export const providers = [
                 password: '19931124',
                 database: 'i-am-emperor',
             });
-            loadEntities(sequelize);
-            await sequelize.sync({ force: true });
+            sequelize.addModels(models);
+            await sequelize.sync();
             return sequelize;
         },
     },

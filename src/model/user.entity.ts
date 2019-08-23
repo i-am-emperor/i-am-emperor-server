@@ -1,24 +1,40 @@
-import { Model, DataTypes, Sequelize } from 'sequelize';
+import { Table, Column, Model, DataType } from 'sequelize-typescript';
 
-class User extends Model { }
-export const UserEntityDefine = (sequelize: Sequelize) => {
-    return User.init(
-        {
-            id: {
-                primaryKey: true,
-                autoIncrement: false,
-                allowNull: false,
-                type: DataTypes.STRING,
-            },
-            name: {
-                allowNull: false,
-                type: DataTypes.STRING,
-            },
-        },
-        {
-            sequelize,
-            modelName: 'user',
-            underscored: true,
-        },
-    );
-};
+export interface IUser {
+    readonly id: string;
+    readonly account: string;
+    readonly password: string;
+    readonly personId: string;
+}
+
+@Table({
+    underscored: true,
+    modelName: 'user',
+    createdAt: true,
+    updatedAt: true,
+})
+export class User extends Model<User> {
+
+    @Column({
+        type: DataType.STRING,
+        primaryKey: true,
+    })
+    readonly id: string;
+
+    @Column({
+        type: DataType.STRING,
+    })
+    readonly account: string;
+
+    @Column({
+        type: DataType.STRING,
+    })
+    readonly password: string;
+
+    @Column({
+        type: DataType.STRING,
+        field: 'person_id',
+    })
+    readonly personId: string;
+
+}
