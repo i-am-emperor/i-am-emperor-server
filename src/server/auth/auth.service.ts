@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { ICommon } from '../../interface/common.interface';
+import { AuthSignUpBodyDto } from '../../app.dto';
 
 @Injectable()
 export class AuthService {
@@ -22,13 +23,22 @@ export class AuthService {
         return false;
     }
 
-    async login(
+    async signIn(
         account: string,
         password: string,
         option: ICommon.FuncOption,
     ) {
         const payload = await this.validUser(account, password, option);
         if (payload === false) throw new UnauthorizedException('登录失败');
+        return {
+            token: `Bearer ${this.jwtService.sign(payload)}`,
+        };
+    }
+
+    async signUp(
+        body: AuthSignUpBodyDto,
+        option: ICommon.FuncOption,
+    ) {
         return {
             token: `Bearer ${this.jwtService.sign(payload)}`,
         };
