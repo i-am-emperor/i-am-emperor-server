@@ -3,6 +3,7 @@ import { UserDao } from './user.dao';
 import { ICommon } from '../../interface/common.interface';
 import { IUser } from '../../model';
 import { UserCreateDto } from './user.dto';
+import { $ } from '../../common/function.common';
 
 @Injectable()
 export class UserService {
@@ -23,13 +24,15 @@ export class UserService {
     public async create(
         body: UserCreateDto,
         option: ICommon.FuncOption,
-    ) {
-        return this.userDao.create(
-            Object.assign(body, { id: '222' }),
-            {
+    ): Promise<IUser> {
+        return this.userDao.create({
+            id: $.makeID(),
+            account: body.account,
+            password: body.password,
+            personId: body.personId,
+        }, {
                 transaction: option.transaction,
-            },
-        );
+            });
     }
 
 }

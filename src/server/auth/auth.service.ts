@@ -39,8 +39,6 @@ export class AuthService {
         body: AuthSignUpBodyDto,
         option: ICommon.FuncOption,
     ) {
-        return {
-            token: `Bearer ${this.jwtService.sign(payload)}`,
-        };
+        return this.userService.create(body, option);
     }
 }
