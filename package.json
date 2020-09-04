@@ -30,7 +30,7 @@
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.3",
-    "sequelize": "^4.44.3",
+    "sequelize": "^5.15.1",
     "sequelize-typescript": "^0.6.11",
     "swagger-ui-express": "^4.0.7"
   },
